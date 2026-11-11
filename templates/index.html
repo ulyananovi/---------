@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Хрум - доставка еды на дом за 30 минут. Свежие блюда из локальных продуктов.">
+    <title>Хрум - доставка еды на дом</title>
+    <link rel="stylesheet" href="{% static 'styles/index.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/footer.css' %}">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-top">
+            <div class="logo">
+                <img src="{% static 'assets/img/логотип.svg' %}" class="logo-img" alt="Логотип Хрум">
+            </div>
+            <nav class="top-nav" aria-label="Основная навигация">
+                <a href="/catalog/" class="nav-btn">Каталог</a>
+                <a href="/login/" class="nav-btn nav-btn-outline">Войти</a>
+            </nav>
+        </div>
+
+        <div class="hero-content">
+            <h1>Вкусная еда<br>с доставкой на дом</h1>
+            <p>Готовим из свежих продуктов и привозим за 30 минут. Выбирайте из сотен блюд на любой вкус.</p>
+            <div class="hero-actions">
+                <a href="/catalog/" class="btn-primary">Смотреть меню</a>
+                <a href="/register/" class="btn-secondary">Зарегистрироваться</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="features" aria-labelledby="features-title">
+            <h2 class="section-title" id="features-title">Почему выбирают нас</h2>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true"></div>
+                    <h3>Быстрая доставка</h3>
+                    <p>Курьер приезжает за 30 минут или доставка бесплатна.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true"></div>
+                    <h3>Свежие продукты</h3>
+                    <p>Готовим каждый день из продуктов местных фермеров.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true"></div>
+                    <h3>Опытные повара</h3>
+                    <p>Наши шеф-повара готовят блюда разных кухонь мира.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true"></div>
+                    <h3>Удобная оплата</h3>
+                    <p>Платите картой онлайн или наличными курьеру.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="categories" aria-labelledby="categories-title">
+            <h2 class="section-title" id="categories-title">Что заказать сегодня</h2>
+            <div class="category-grid">
+                <a href="/catalog/" class="category-card">
+                    <img src="{% static 'assets/img/суп.png' %}" alt="Супы">
+                    <span>Супы</span>
+                </a>
+                <a href="/catalog/" class="category-card">
+                    <img src="{% static 'assets/img/салат.png' %}" alt="Салаты">
+                    <span>Салаты</span>
+                </a>
+                <a href="/catalog/" class="category-card">
+                    <img src="{% static 'assets/img/паста.png' %}" alt="Паста">
+                    <span>Паста</span>
+                </a>
+                <a href="/catalog/" class="category-card">
+                    <img src="{% static 'assets/img/сэндвич.png' %}" alt="Сэндвичи">
+                    <span>Сэндвичи</span>
+                </a>
+                <a href="/catalog/" class="category-card">
+                    <img src="{% static 'assets/img/десерт.png' %}" alt="Десерты">
+                    <span>Десерты</span>
+                </a>
+                <a href="/catalog/" class="category-card">
+                    <img src="{% static 'assets/img/напитки.png' %}" alt="Напитки">
+                    <span>Напитки</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="{% static 'assets/img/шапка повара.png' %}" class="footer-logo-img" alt="">
+                    <span class="footer-logo-text">Вкусно</span>
+                </div>
+                <p class="footer-desc">
+                    Доставка свежей еды на дом за 30 минут.
+                    Готовим из локальных продуктов каждый день.
+                </p>
+            </div>
+
+            <nav class="footer-col" aria-label="Навигация в футере">
+                <h2 class="footer-title">Навигация</h2>
+                <a href="/" class="footer-link">Главная</a>
+                <a href="/catalog/" class="footer-link">Каталог</a>
+                <a href="/profile/" class="footer-link">Профиль</a>
+            </nav>
+
+            <div class="footer-col">
+                <h2 class="footer-title">Аккаунт</h2>
+                <div id="footerAccount" class="footer-account">
+                    <a href="/login/" class="footer-link">Войти</a>
+                    <a href="/register/" class="footer-link">Регистрация</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h2 class="footer-title">Контакты</h2>
+                <a class="footer-link">+7 (800) 123-45-67</a>
+                <a class="footer-link">vkusno2026@yandex.ru</a>
+                <span class="footer-text">Ежедневно 10:00 – 23:00</span>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 Вкусно. Все права защищены.</span>
+            <span>Доставка еды · Ульяновск</span>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts/auth.js' %}"></script>
+</body>
+</html>

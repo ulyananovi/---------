@@ -1,0 +1,263 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Raleway, sans-serif;
+}
+
+@font-face {
+    font-family: Raleway;
+    src: url(../assets/fonts/Raleway/Raleway-v4020-Medium.otf);
+    font-display: swap;
+}
+
+@font-face {
+    font-family: South Park;
+    src: url(../assets/fonts/fonts_sp-font-cyr\ 2.ttf);
+    font-display: swap;
+}
+
+body {
+    background-image: url(../assets/img/фонн.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #333;
+}
+
+.hero {
+    padding: 20px 20px 40px;
+}
+
+.hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 100px;
+    height: 100px;
+}
+
+.logo-text {
+    font-family: South Park;
+    font-size: 22px;
+    color: #5D212D;
+}
+
+.top-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #FE8E66;
+    color: #fff;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    background: #e5734a;
+}
+
+.nav-btn-outline {
+    background: transparent;
+    color: #5D212D;
+    border: 2px solid #FE8E66;
+}
+
+.nav-btn-outline:hover {
+    background: #FE8E66;
+    color: #fff;
+}
+
+.hero-content {
+    max-width: 560px;
+}
+
+.hero-content h1 {
+    font-family: South Park;
+    font-size: 38px;
+    line-height: 1.15;
+    color: #5D212D;
+    margin-bottom: 18px;
+}
+
+.hero-content p {
+    font-size: 16px;
+    color: #4C5C13;
+    margin-bottom: 26px;
+    line-height: 1.5;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px 26px;
+    border-radius: 24px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.btn-primary {
+    background: #FE8E66;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #e5734a;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #D9E694;
+    color: #4C5C13;
+}
+
+.btn-secondary:hover {
+    background: #c5d67a;
+    transform: translateY(-2px);
+}
+
+main {
+    padding: 0 20px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #5D212D;
+    margin-bottom: 18px;
+}
+
+.features {
+    margin-bottom: 40px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.feature-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 18px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.feature-icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.feature-card h3 {
+    font-size: 16px;
+    color: #4C5C13;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.45;
+}
+
+.categories {
+    margin-bottom: 40px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 14px;
+}
+
+.category-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    border: 2px solid transparent;
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    border-color: #FE8E66;
+}
+
+.category-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.category-card span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4C5C13;
+    font-family: South Park;
+    text-align: center;
+}
+
+/* ---------- Десктоп ---------- */
+@media (min-width: 768px) {
+    .hero {
+        padding: 30px 60px 60px;
+    }
+
+    .hero-content h1 {
+        font-size: 52px;
+    }
+
+    .hero-content p {
+        font-size: 18px;
+    }
+
+    main {
+        padding: 0 60px;
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+}
