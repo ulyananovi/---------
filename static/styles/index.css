@@ -7,18 +7,18 @@
 
 @font-face {
     font-family: Raleway;
-    src: url(../assets/fonts/Raleway/Raleway-v4020-Medium.otf);
+    src: url(/static/assets/fonts/Raleway/Raleway-v4020-Medium.otf);
     font-display: swap;
 }
 
 @font-face {
     font-family: South Park;
-    src: url(../assets/fonts/fonts_sp-font-cyr\ 2.ttf);
+    src: url(/static/assets/fonts/fonts_sp-font-cyr\ 2.ttf);
     font-display: swap;
 }
 
 body {
-    background-image: url(../assets/img/фонн.svg);
+    background-image: url(/static/assets/img/фон.svg);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -239,7 +239,145 @@ main {
     text-align: center;
 }
 
+/* ---------- Стили футера ---------- */
+.site-footer {
+    background-color: #B9D05B;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    margin-top: 60px;
+    padding: 36px 20px 20px;
+    color: #4C5C13;
+}
+
+.footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo-img {
+    width: 50px;
+    height: 50px;
+}
+
+.footer-logo-text {
+    font-family: South Park, Raleway, sans-serif;
+    font-size: 22px;
+    color: #5D212D;
+}
+
+.footer-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4C5C13;
+    max-width: 320px;
+    opacity: 0.85;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-title {
+    font-family: South Park, Raleway, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #5D212D;
+    margin-bottom: 4px;
+}
+
+.footer-account {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-link {
+    text-decoration: none;
+    font-size: 13px;
+    color: #4C5C13;
+    width: fit-content;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #5D212D;
+    transform: translateX(3px);
+}
+
+.footer-text {
+    font-size: 13px;
+    color: #4C5C13;
+    opacity: 0.85;
+}
+
+.footer-bottom {
+    max-width: 1100px;
+    margin: 28px auto 0;
+    padding-top: 16px;
+    border-top: 1px solid rgba(76, 92, 19, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: #4C5C13;
+    opacity: 0.8;
+}
+
+/* ---------- Планшет ---------- */
+@media (min-width: 600px) {
+    .site-footer {
+        padding: 40px 40px 22px;
+    }
+
+    .footer-inner {
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 32px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
 /* ---------- Десктоп ---------- */
+@media (min-width: 900px) {
+    .site-footer {
+        padding: 48px 60px 24px;
+    }
+
+    .footer-inner {
+        grid-template-columns: 2fr 1fr 1fr 1.2fr;
+        gap: 40px;
+    }
+
+    .footer-brand {
+        grid-column: auto;
+    }
+}
+
 @media (min-width: 768px) {
     .hero {
         padding: 30px 60px 60px;
