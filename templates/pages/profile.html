@@ -1,0 +1,227 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Профиль пользователя сервиса доставки еды Хрум.">
+    <title>Профиль — Хрум</title>
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
+</head>
+<body data-protected="true">
+    <header>
+        <button type="button" class="setup-btn" id="settingsBtn" aria-label="Настройки профиля">
+            <img src="{% static 'assets/img/настройки.png' %}" class="setup" alt="">
+        </button>
+    </header>
+
+    <div class="settings-modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+        <div class="modal-content">
+            <h3 id="settingsTitle">Настройки</h3>
+            <div class="menu-item" tabindex="0" role="button"><span>Редактировать имя и фамилию</span></div>
+            <div class="menu-item" tabindex="0" role="button"><span>Редактировать никнейм</span></div>
+            <div class="menu-item" tabindex="0" role="button"><span>Поменять фото профиля</span></div>
+            <div class="menu-item" tabindex="0" role="button"><span>Изменить адрес доставки</span></div>
+            <div class="menu-item" tabindex="0" role="button"><span>Переключить тему</span></div>
+            <div class="menu-item logout">
+                <a href="#" id="logoutBtn">Выйти из аккаунта</a>
+            </div>
+            <div class="menu-item cancel"><span id="cancelBtn" role="button" tabindex="0">Отмена</span></div>
+        </div>
+    </div>
+
+    <main>
+        <div class="main">
+            <section class="profile" aria-label="Профиль пользователя">
+                <img src="{% static 'assets/img/фото профиля.jpg' %}" class="img-pfp" alt="Фото профиля">
+                <div class="profile-text">
+                    <p class="profile-name" id="profileName">Имя Фамилия</p>
+                    <p class="profile-nick" id="profileNick">@никнейм</p>
+                </div>
+            </section>
+
+            <section class="stats" aria-label="Статистика">
+                <div class="stats-item">
+                    <p class="stats-value" id="statOrders">0</p>
+                    <p class="stats-label">Заказов</p>
+                </div>
+                <div class="stats-item">
+                    <p class="stats-value" id="statBonus">0</p>
+                    <p class="stats-label">Бонусов</p>
+                </div>
+                <div class="stats-item">
+                    <p class="stats-value" id="statFavorites">0</p>
+                    <p class="stats-label">Избранных</p>
+                </div>
+            </section>
+
+            <section class="section" aria-labelledby="ordersTitle">
+                <div class="section-head">
+                    <h2 class="section-title" id="ordersTitle">Мои заказы</h2>
+                    <a href="/catalog/" class="add-btn" title="Перейти в каталог">+ Добавить</a>
+                </div>
+                <div class="cards-list" id="ordersList">
+                </div>
+                <p id="emptyOrders" style="color: #4C5C13; font-size: 14px; text-align: center; margin-top: 10px;">У вас пока нет заказов. Перейдите в каталог, чтобы сделать первый заказ.</p>
+            </section>
+
+            <section class="section" aria-labelledby="favoritesTitle">
+                <div class="section-head">
+                    <h2 class="section-title" id="favoritesTitle">Избранные блюда</h2>
+                </div>
+                <div class="cards-list">
+                    <article class="dish-card">
+                        <div class="dish-image"><img src="{% static 'assets/img/паста карбонара.jpg' %}" alt="Паста Карбонара"></div>
+                        <h3 class="dish-title">Паста Карбонара</h3>
+                        <div class="dish-info">
+                            <span class="price">450 ₽</span>
+                            <span class="status">В меню</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <div class="profile-links">
+                <a href="/catalog/" class="link">← В каталог</a>
+                <a href="/" class="link">На главную</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="{% static 'assets/img/логотип.svg' %}" class="footer-logo-img" alt="">
+                </div>
+                <p class="footer-desc">
+                    Доставка свежей еды на дом за 30 минут.
+                    Готовим из локальных продуктов каждый день.
+                </p>
+            </div>
+
+            <nav class="footer-col" aria-label="Навигация в футере">
+                <h2 class="footer-title">Навигация</h2>
+                <a href="/" class="footer-link">Главная</a>
+                <a href="/catalog/" class="footer-link">Каталог</a>
+                <a href="/profile/" class="footer-link">Профиль</a>
+            </nav>
+
+            <div class="footer-col">
+                <h2 class="footer-title">Аккаунт</h2>
+                <div id="footerAccount" class="footer-account">
+                    <a href="/login/" class="footer-link">Войти</a>
+                    <a href="/register/" class="footer-link">Регистрация</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h2 class="footer-title">Контакты</h2>
+                <a class="footer-link">+7 (800) 123-45-67</a>
+                <a class="footer-link">hroom2026@yandex.ru</a>
+                <span class="footer-text">Ежедневно 10:00 – 23:00</span>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span>© 2026 Хрум. Все права защищены.</span>
+            <span>Доставка еды · Ульяновск</span>
+        </div>
+    </footer>
+
+    <script src="{% static 'scripts/auth.js' %}"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const fullName = localStorage.getItem('hroom_user');
+                const login = localStorage.getItem('hroom_login');
+                const profileName = document.getElementById('profileName');
+                const profileNick = document.getElementById('profileNick');
+                if (fullName && profileName) profileName.textContent = fullName;
+                if (login && profileNick) profileNick.textContent = '@' + login;
+
+                const ordersList = document.getElementById('ordersList');
+                const emptyOrders = document.getElementById('emptyOrders');
+                const statOrders = document.getElementById('statOrders');
+                const statBonus = document.getElementById('statBonus');
+                
+                let orders = JSON.parse(localStorage.getItem('hroom_orders')) || [];
+
+                function renderOrders() {
+                    ordersList.innerHTML = ''; 
+                    
+                    if (orders.length === 0) {
+                        emptyOrders.style.display = 'block';
+                    } else {
+                        emptyOrders.style.display = 'none';
+                    }
+
+                    orders.forEach((order, index) => {
+                        const card = document.createElement('article');
+                        card.className = 'dish-card';
+                        card.innerHTML = `
+                            <div class="dish-image"><img src="/static/assets/img/${order.img}" alt="${order.title}"></div>
+                            <h3 class="dish-title">${order.title}</h3>
+                            <div class="dish-info">
+                                <span class="price">${order.price} ₽</span>
+                                <span class="status">Доставлен</span>
+                            </div>
+                            <button class="delete-order-btn" data-index="${index}">Отменить</button>
+                        `;
+                        ordersList.appendChild(card);
+                    });
+
+                    statOrders.textContent = orders.length;
+                    statBonus.textContent = orders.length * 10;
+
+                    document.querySelectorAll('.delete-order-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const idx = e.target.getAttribute('data-index');
+                            orders.splice(idx, 1); 
+                            localStorage.setItem('hroom_orders', JSON.stringify(orders)); 
+                            renderOrders(); 
+                        });
+                    });
+                }
+
+                renderOrders();
+
+                const settingsBtn = document.getElementById('settingsBtn');
+                const settingsModal = document.getElementById('settingsModal');
+                const cancelBtn = document.getElementById('cancelBtn');
+                const logoutBtn = document.getElementById('logoutBtn');
+
+                const openModal = () => { settingsModal.style.display = 'flex'; };
+                const closeModal = () => { settingsModal.style.display = 'none'; };
+
+                settingsBtn.addEventListener('click', openModal);
+                cancelBtn.addEventListener('click', closeModal);
+                cancelBtn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeModal(); }
+                });
+
+                settingsModal.addEventListener('click', (e) => {
+                    if (e.target === settingsModal) closeModal();
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeModal();
+                });
+
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (confirm('Вы уверены, что хотите выйти из аккаунта?')) {
+                        localStorage.removeItem('hroom_auth');
+                        localStorage.removeItem('hroom_user');
+                        localStorage.removeItem('hroom_login');
+                        localStorage.removeItem('hroom_orders');
+                        window.location.href = '/';
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
