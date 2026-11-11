@@ -239,7 +239,6 @@ main {
     text-align: center;
 }
 
-/* ---------- Стили футера ---------- */
 .site-footer {
     background-color: #B9D05B;
     border-top-left-radius: 40px;
@@ -340,7 +339,6 @@ main {
     opacity: 0.8;
 }
 
-/* ---------- Планшет ---------- */
 @media (min-width: 600px) {
     .site-footer {
         padding: 40px 40px 22px;
@@ -362,7 +360,6 @@ main {
     }
 }
 
-/* ---------- Десктоп ---------- */
 @media (min-width: 900px) {
     .site-footer {
         padding: 48px 60px 24px;
