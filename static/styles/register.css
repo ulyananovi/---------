@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: South Park;
+    src: url(/static/assets/fonts/fonts_sp-font-cyr\ 2.ttf);
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Raleway;
+    src: url(/static/assets/fonts/Raleway/Raleway-v4020-Medium.otf);
+    font-display: swap;
+}
+
+@font-face {
+    font-family: Raleway-bold;
+    src: url(/static/assets/fonts/Raleway/Raleway-v4020-Bold.otf);
+    font-display: swap;
+}
+
+body {
+    background-color: #FE8E66;
+    min-height: 100vh;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+.create-acc {
+    font-family: South Park;
+    font-size: 26px;
+    color: #F6EDE4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.chef-hat {
+    height: 100px;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 320px;
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+}
+
+.form-style {
+    font-size: 12px;
+    border: 2px solid transparent;
+    outline: none;
+    background: #FEFEFE;
+    color: #4C5C13;
+    border-radius: 20px;
+    height: 34px;
+    width: 100%;
+    padding-left: 15px;
+    font-family: Raleway;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.form-style::placeholder {
+    color: #6a714e;
+    opacity: 0.7;
+}
+
+.form-style.input-error {
+    border-color: #d32f2f;
+    background: #fff2f2;
+}
+
+.text {
+    color: #FEFEFE;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    font-family: Raleway;
+    font-size: 12px;
+}
+
+.error-msg {
+    display: block;
+    min-height: 14px;
+    margin-top: 4px;
+    padding-left: 14px;
+    color: #7a0000;
+    font-family: Raleway-bold;
+    font-size: 11px;
+}
+
+.button {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background: #D9E694;
+    color: #4C5C13;
+    border-radius: 20px;
+    height: 36px;
+    padding: 0 30px;
+    font-family: South Park;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.button:hover {
+    background: #c5d67a;
+}
+
+.link-secondary {
+    color: #FEFEFE;
+    margin-top: 15px;
+    font-family: Raleway-bold;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.link-secondary:hover {
+    text-decoration: underline;
+}
+
+.password-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4C5C13;
+    padding: 4px;
+}
+
+.eye-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    object-fit: contain;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+}

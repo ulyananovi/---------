@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Вход в аккаунт сервиса доставки еды Хрум.">
+    <title>Войти — Хрум</title>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+</head>
+<body>
+    <main>
+        <div class="main">
+            <div class="create-acc">
+                <img src="{% static 'assets/img/логотип.svg' %}" class="chef-hat" alt="Логотип Хрум">
+                <p>Вход в<br>аккаунт</p>
+            </div>
+
+            <form class="auth-form" id="loginForm" novalidate>
+                <div class="input-group">
+                    <label class="text" for="loginEmail">Почта</label>
+                    <input class="form-style" id="loginEmail" name="email" type="email"
+                           placeholder="Введите почту" autocomplete="email" required>
+                    <span class="error-msg" data-error-for="loginEmail" role="alert"></span>
+                </div>
+
+                <div class="input-group">
+                    <label class="text" for="loginPassword">Пароль</label>
+                    <div class="password-wrap">
+                        <input class="form-style" id="loginPassword" name="password" type="password"
+                               placeholder="Введите пароль" autocomplete="current-password" required>
+                        <button type="button" class="toggle-password" data-target="loginPassword"
+                                aria-label="Показать пароль">
+                            <img src="{% static 'assets/img/открыт глаз.svg' %}"
+                                 alt=""
+                                 class="eye-icon"
+                                 data-open="{% static 'assets/img/открыт глаз.svg' %}"
+                                 data-closed="{% static 'assets/img/закрыт глаз.svg' %}">
+                        </button>
+                    </div>
+                    <span class="error-msg" data-error-for="loginPassword" role="alert"></span>
+                </div>
+
+                <button type="submit" class="button">ВОЙТИ</button>
+                <a href="/register/" class="link-secondary">Нет аккаунта?</a>
+                <a href="/" class="link-secondary">← На главную</a>
+            </form>
+        </div>
+    </main>
+
+    <script src="{% static 'scripts/auth.js' %}"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+            function setError(input, message) {
+                const span = document.querySelector(`.error-msg[data-error-for="${input.id}"]`);
+                if (span) span.textContent = message || '';
+                input.classList.toggle('input-error', Boolean(message));
+            }
+
+            function validateField(input) {
+                const value = input.value.trim();
+
+                if (!value) {
+                    setError(input, input.id === 'loginEmail' ? 'Введите почту' : 'Введите пароль');
+                    return false;
+                }
+                if (input.id === 'loginEmail' && !EMAIL_RE.test(value)) {
+                    setError(input, 'Некорректный формат почты');
+                    return false;
+                }
+                if (input.id === 'loginPassword' && value.length < 6) {
+                    setError(input, 'Пароль слишком короткий');
+                    return false;
+                }
+                setError(input, '');
+                return true;
+            }
+
+            const form = document.getElementById('loginForm');
+            const email = document.getElementById('loginEmail');
+            const password = document.getElementById('loginPassword');
+
+            [email, password].forEach((input) => {
+                input.addEventListener('blur', () => validateField(input));
+                input.addEventListener('input', () => {
+                    if (input.classList.contains('input-error')) validateField(input);
+                });
+            });
+
+            document.querySelectorAll('.toggle-password').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const input = document.getElementById(btn.dataset.target);
+                    if (!input) return;
+                    const icon = btn.querySelector('.eye-icon');
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+
+                    if (icon) {
+                        const openSrc = icon.dataset.open;
+                        const closedSrc = icon.dataset.closed;
+                        icon.src = isPassword ? closedSrc : openSrc;
+                    }
+                    btn.setAttribute('aria-label', isPassword ? 'Скрыть пароль' : 'Показать пароль');
+                });
+            });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const okEmail = validateField(email);
+                const okPassword = validateField(password);
+
+                if (!okEmail || !okPassword) {
+                    (okEmail ? password : email).focus();
+                    return;
+                }
+
+                const login = email.value.split('@')[0];
+                // Сохраняем данные под новым ключом hroom_ (вместо vkusno_)
+                localStorage.setItem('hroom_auth', 'true');
+                localStorage.setItem('hroom_user', login);
+                localStorage.setItem('hroom_login', login);
+                
+                window.location.href = '/profile/';
+            });
+        })();
+    </script>
+</body>
+</html>
