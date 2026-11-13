@@ -25,33 +25,13 @@
             </div>
         </div>
 
-        <div class="ingredients">
-            <div class="cards-ingredients-swipe" role="tablist" aria-label="Категории блюд">
-                <button class="ingredient-card" type="button" role="tab" data-type="суп">
-                    <div class="ingredient-image"><img src="{% static 'assets/img/суп.png' %}" alt="Супы"></div>
-                    <div class="ingredient-name">Супы</div>
-                </button>
-                <button class="ingredient-card" type="button" role="tab" data-type="салат">
-                    <div class="ingredient-image"><img src="{% static 'assets/img/салат.png' %}" alt="Салаты"></div>
-                    <div class="ingredient-name">Салаты</div>
-                </button>
-                <button class="ingredient-card" type="button" role="tab" data-type="паста">
-                    <div class="ingredient-image"><img src="{% static 'assets/img/паста.png' %}" alt="Паста"></div>
-                    <div class="ingredient-name">Паста</div>
-                </button>
-                <button class="ingredient-card" type="button" role="tab" data-type="сэндвич">
-                    <div class="ingredient-image"><img src="{% static 'assets/img/сэндвич.png' %}" alt="Сэндвичи"></div>
-                    <div class="ingredient-name">Сэндвичи</div>
-                </button>
-                <button class="ingredient-card" type="button" role="tab" data-type="десерт">
-                    <div class="ingredient-image"><img src="{% static 'assets/img/десерт.png' %}" alt="Десерты"></div>
-                    <div class="ingredient-name">Десерты</div>
-                </button>
-                <button class="ingredient-card" type="button" role="tab" data-type="напитки">
-                    <div class="ingredient-image"><img src="{% static 'assets/img/напитки.png' %}" alt="Напитки"></div>
-                    <div class="ingredient-name">Напитки</div>
-                </button>
-            </div>
+        <div class="cards-ingredients-swipe" role="tablist" aria-label="Категории блюд">
+            {% for cat in categories %}
+            <button class="ingredient-card" type="button" onclick="window.location.href='?category={{ cat.id }}'">
+                <div class="ingredient-name">{{ cat.name }}</div>
+            </button>
+            {% endfor %}
+        </div>
 
             <div class="main-swipe" role="group" aria-label="Фильтры по ингредиентам">
                 <p data-filter="популярные" role="button" tabindex="0">Популярные</p>
@@ -65,88 +45,27 @@
 
             <div class="recipes-container">
                 <div class="cards-main" id="cardsMain">
-                    <article class="recipe-card" data-type="паста" data-filters="с мясом, с сыром">
-                        <div class="dish-image"><img src="{% static 'assets/img/паста карбонара.jpg' %}" alt="Паста Карбонара"></div>
-                        <h3 class="dish-title">Паста Карбонара</h3>
+                    {% for dish in dishes %}
+                    <article class="recipe-card" data-type="{{ dish.category.name|lower }}">
+                        <div class="dish-image"><img src="{% static 'assets/img/' %}{{ dish.image_name }}" alt="{{ dish.title }}"></div>
+                        <h3 class="dish-title">{{ dish.title }}</h3>
                         <div class="cooking-info">
-                            <span class="price">450 ₽</span>
-                            <span class="weight">320 г</span>
+                            <span class="price">{{ dish.price }} ₽</span>
+                            <span class="weight">{{ dish.weight }}</span>
                         </div>
+                        <button class="order-btn" data-title="{{ dish.title }}" data-price="{{ dish.price }}" data-img="{{ dish.image_name }}">Заказать</button>
                     </article>
-
-                    <article class="recipe-card" data-type="салат" data-filters="популярные, с овощами, с сыром">
-                        <div class="dish-image"><img src="{% static 'assets/img/греч.jpg' %}" alt="Греческий салат"></div>
-                        <h3 class="dish-title">Греческий салат</h3>
-                        <div class="cooking-info">
-                            <span class="price">320 ₽</span>
-                            <span class="weight">250 г</span>
-                        </div>
-                    </article>
-
-                    <article class="recipe-card" data-type="суп" data-filters="популярные, с морепродуктами, с грибами">
-                        <div class="dish-image"><img src="{% static 'assets/img/том.jpg' %}" alt="Том Ям с креветками"></div>
-                        <h3 class="dish-title">Том Ям с креветками</h3>
-                        <div class="cooking-info">
-                            <span class="price">590 ₽</span>
-                            <span class="weight">400 г</span>
-                        </div>
-                    </article>
-
-                    <article class="recipe-card" data-type="десерт" data-filters="популярные, десерты, с сыром">
-                        <div class="dish-image"><img src="{% static 'assets/img/тирамису.jpg' %}" alt="Тирамису"></div>
-                        <h3 class="dish-title">Тирамису</h3>
-                        <div class="cooking-info">
-                            <span class="price">280 ₽</span>
-                            <span class="weight">150 г</span>
-                        </div>
-                    </article>
-
-                    <article class="recipe-card" data-type="напитки" data-filters="популярные, с овощами">
-                        <div class="dish-image"><img src="{% static 'assets/img/мохито.jpg' %}" alt="Мохито безалкогольный"></div>
-                        <h3 class="dish-title">Мохито безалкогольный</h3>
-                        <div class="cooking-info">
-                            <span class="price">190 ₽</span>
-                            <span class="weight">400 мл</span>
-                        </div>
-                    </article>
-
-                    <article class="recipe-card" data-type="сэндвич" data-filters="популярные, с мясом, с овощами">
-                        <div class="dish-image"><img src="{% static 'assets/img/сендвич.jpg' %}" alt="Клубный сэндвич с курицей"></div>
-                        <h3 class="dish-title">Клубный с курицей</h3>
-                        <div class="cooking-info">
-                            <span class="price">390 ₽</span>
-                            <span class="weight">280 г</span>
-                        </div>
-                    </article>
-
-                    <article class="recipe-card" data-type="суп" data-filters="с овощами, с сыром">
-                        <div class="dish-image"><img src="{% static 'assets/img/крем.jpg' %}" alt="Крем-суп из тыквы"></div>
-                        <h3 class="dish-title">Крем-суп из тыквы</h3>
-                        <div class="cooking-info">
-                            <span class="price">340 ₽</span>
-                            <span class="weight">300 г</span>
-                        </div>
-                    </article>
-
-                    <article class="recipe-card" data-type="салат" data-filters="популярные, с мясом, с овощами">
-                        <div class="dish-image"><img src="{% static 'assets/img/цезарь.jpg' %}" alt="Салат Цезарь с курицей"></div>
-                        <h3 class="dish-title">Цезарь с курицей</h3>
-                        <div class="cooking-info">
-                            <span class="price">410 ₽</span>
-                            <span class="weight">270 г</span>
-                        </div>
-                    </article>
+                    {% endfor %}
                 </div>
                 <p class="empty-message" id="emptyMessage" hidden>Ничего не найдено. Попробуйте изменить фильтры.</p>
             </div>
-        </div>
     </main>
 
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <img src="{% static 'assets/img/логотип.svg' %}" class="footer-logo-img" alt="">
+                    <img src="{% static 'assets/img/cards-ingredients-swipe' %}" class="footer-logo-img" alt="">
                 </div>
                 <p class="footer-desc">
                     Доставка свежей еды на дом за 30 минут.
