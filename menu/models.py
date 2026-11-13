@@ -2,6 +2,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название категории")
+    image_name = models.CharField(max_length=100, blank=True, verbose_name="Имя файла картинки")
 
     def __str__(self):
         return self.name

@@ -28,6 +28,7 @@
         <div class="cards-ingredients-swipe" role="tablist" aria-label="Категории блюд">
             {% for cat in categories %}
             <button class="ingredient-card" type="button" onclick="window.location.href='?category={{ cat.id }}'">
+                <div class="ingredient-image"><img src="{% static 'assets/img/' %}{{ cat.image_name }}" alt="{{ cat.name }}"></div>
                 <div class="ingredient-name">{{ cat.name }}</div>
             </button>
             {% endfor %}
@@ -65,7 +66,7 @@
         <div class="footer-inner">
             <div class="footer-brand">
                 <div class="footer-logo">
-                    <img src="{% static 'assets/img/cards-ingredients-swipe' %}" class="footer-logo-img" alt="">
+                    <img src="{% static 'assets/img/логотип.svg' %}" class="footer-logo-img" alt="">
                 </div>
                 <p class="footer-desc">
                     Доставка свежей еды на дом за 30 минут.
