@@ -35,20 +35,20 @@
         </div>
 
             <div class="main-swipe" role="group" aria-label="Фильтры по ингредиентам">
-                <p data-filter="популярные" role="button" tabindex="0">Популярные</p>
-                <p data-filter="с овощами" role="button" tabindex="0">С овощами</p>
-                <p data-filter="с мясом" role="button" tabindex="0">С мясом</p>
-                <p data-filter="с грибами" role="button" tabindex="0">С грибами</p>
-                <p data-filter="с морепродуктами" role="button" tabindex="0">С морепродуктами</p>
-                <p data-filter="с сыром" role="button" tabindex="0">С сыром</p>
-                <p data-filter="десерты" role="button" tabindex="0">Десерты</p>
+                <p onclick="window.location.href='?tag=популярные'">Популярные</p>
+                <p onclick="window.location.href='?tag=с овощами'">С овощами</p>
+                <p onclick="window.location.href='?tag=с мясом'">С мясом</p>
+                <p onclick="window.location.href='?tag=с грибами'">С грибами</p>
+                <p onclick="window.location.href='?tag=с морепродуктами'">С морепродуктами</p>
+                <p onclick="window.location.href='?tag=с сыром'">С сыром</p>
+                <p onclick="window.location.href='?tag=десерты'">Десерты</p>
             </div>
 
             <div class="recipes-container">
                 <div class="cards-main" id="cardsMain">
                     {% for dish in dishes %}
                     <article class="recipe-card" data-type="{{ dish.category.name|lower }}">
-                        <div class="dish-image"><img src="{% static 'assets/img/' %}{{ dish.image_name }}" alt="{{ dish.title }}"></div>
+                        <div class="dish-image"><img src="{{ dish.image.url }}" alt="{{ dish.title }}"></div>
                         <h3 class="dish-title">{{ dish.title }}</h3>
                         <div class="cooking-info">
                             <span class="price">{{ dish.price }} ₽</span>
