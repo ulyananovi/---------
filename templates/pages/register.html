@@ -16,62 +16,33 @@
                 <p>Создание<br>аккаунта</p>
             </div>
 
-            <form class="auth-form" id="registerForm" novalidate>
+            <form class="auth-form" method="post">
+                {% csrf_token %}
                 <div class="input-group">
-                    <label class="text" for="regName">ФИО</label>
-                    <input class="form-style" id="regName" name="fullname" type="text"
-                           placeholder="Иванов Иван Иванович" autocomplete="name">
-                    <span class="error-msg" data-error-for="regName" role="alert"></span>
+                    <label class="text">ФИО</label>
+                    {{ form.full_name }}
+                    {{ form.full_name.errors }}
                 </div>
-
                 <div class="input-group">
-                    <label class="text" for="regEmail">Почта</label>
-                    <input class="form-style" id="regEmail" name="email" type="email"
-                           placeholder="example@mail.ru" autocomplete="email">
-                    <span class="error-msg" data-error-for="regEmail" role="alert"></span>
+                    <label class="text">Почта</label>
+                    {{ form.email }}
+                    {{ form.email.errors }}
                 </div>
-
                 <div class="input-group">
-                    <label class="text" for="regLogin">Логин</label>
-                    <input class="form-style" id="regLogin" name="login" type="text"
-                           placeholder="Ваш логин" autocomplete="username">
-                    <span class="error-msg" data-error-for="regLogin" role="alert"></span>
+                    <label class="text">Логин</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
                 </div>
-
                 <div class="input-group">
-                    <label class="text" for="regPassword">Пароль</label>
-                    <div class="password-wrap">
-                        <input class="form-style" id="regPassword" name="password" type="password"
-                               placeholder="Минимум 8 символов" autocomplete="new-password">
-                        <button type="button" class="toggle-password" data-target="regPassword"
-                                aria-label="Показать пароль">
-                            <img src="{% static 'assets/img/открыт глаз.svg' %}"
-                                 alt=""
-                                 class="eye-icon"
-                                 data-open="{% static 'assets/img/открыт глаз.svg' %}"
-                                 data-closed="{% static 'assets/img/закрыт глаз.svg' %}">
-                        </button>
-                    </div>
-                    <span class="error-msg" data-error-for="regPassword" role="alert"></span>
+                    <label class="text">Пароль</label>
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
                 </div>
-
                 <div class="input-group">
-                    <label class="text" for="regPasswordConfirm">Повтор пароля</label>
-                    <div class="password-wrap">
-                        <input class="form-style" id="regPasswordConfirm" name="passwordConfirm" type="password"
-                               placeholder="Повторите пароль" autocomplete="new-password">
-                        <button type="button" class="toggle-password" data-target="regPasswordConfirm"
-                                aria-label="Показать пароль">
-                            <img src="{% static 'assets/img/открыт глаз.svg' %}"
-                                 alt=""
-                                 class="eye-icon"
-                                 data-open="{% static 'assets/img/открыт глаз.svg' %}"
-                                 data-closed="{% static 'assets/img/закрыт глаз.svg' %}">
-                        </button>
-                    </div>
-                    <span class="error-msg" data-error-for="regPasswordConfirm" role="alert"></span>
+                    <label class="text">Повтор пароля</label>
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
                 </div>
-
                 <button type="submit" class="button">ЗАРЕГИСТРИРОВАТЬСЯ</button>
                 <a href="/login/" class="link-secondary">Есть аккаунт?</a>
                 <a href="/" class="link-secondary">← На главную</a>

@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.contrib.auth import login, authenticate, logout
+from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from django.shortcuts import render, redirect
 from .models import Category, Dish, Filter, Order
 from django.http import JsonResponse
 import json
@@ -48,3 +50,34 @@ def make_order(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
             
     return JsonResponse({'status': 'error', 'message': 'Метод не разрешен'}, status=405)
+
+def register_view(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.first_name = form.cleaned_data.get('full_name')
+            user.save()
+            login(request, user)
+            return redirect('catalog')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'pages/register.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('catalog')
+    else:
+        form = CustomAuthenticationForm()
+    return render(request, 'pages/login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')

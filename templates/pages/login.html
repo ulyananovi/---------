@@ -16,35 +16,23 @@
                 <p>Вход в<br>аккаунт</p>
             </div>
 
-            <form class="auth-form" id="loginForm" novalidate>
+            <form class="auth-form" method="post">
+                {% csrf_token %}
                 <div class="input-group">
-                    <label class="text" for="loginEmail">Почта</label>
-                    <input class="form-style" id="loginEmail" name="email" type="email"
-                           placeholder="Введите почту" autocomplete="email" required>
-                    <span class="error-msg" data-error-for="loginEmail" role="alert"></span>
+                    <label class="text">Логин</label>
+                    {{ form.username }}
+                    {{ form.username.errors }}
                 </div>
-
                 <div class="input-group">
-                    <label class="text" for="loginPassword">Пароль</label>
-                    <div class="password-wrap">
-                        <input class="form-style" id="loginPassword" name="password" type="password"
-                               placeholder="Введите пароль" autocomplete="current-password" required>
-                        <button type="button" class="toggle-password" data-target="loginPassword"
-                                aria-label="Показать пароль">
-                            <img src="{% static 'assets/img/открыт глаз.svg' %}"
-                                 alt=""
-                                 class="eye-icon"
-                                 data-open="{% static 'assets/img/открыт глаз.svg' %}"
-                                 data-closed="{% static 'assets/img/закрыт глаз.svg' %}">
-                        </button>
-                    </div>
-                    <span class="error-msg" data-error-for="loginPassword" role="alert"></span>
+                    <label class="text">Пароль</label>
+                    {{ form.password }}
+                    {{ form.password.errors }}
                 </div>
-
                 <button type="submit" class="button">ВОЙТИ</button>
                 <a href="/register/" class="link-secondary">Нет аккаунта?</a>
                 <a href="/" class="link-secondary">← На главную</a>
             </form>
+            
         </div>
     </main>
 
