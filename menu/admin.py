@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Dish, Filter
+from .models import Category, Dish, Filter, Order
 
 class FilterInline(admin.TabularInline):
     model = Filter
@@ -14,3 +14,4 @@ class DishAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Dish, DishAdmin)
 admin.site.register(Filter)
+admin.site.register(Order)

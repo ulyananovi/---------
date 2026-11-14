@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название категории")
@@ -26,3 +27,12 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.title
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, verbose_name="Блюдо")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата заказа")
+    status = models.CharField(max_length=50, default='Новый', verbose_name="Статус")
+
+    def __str__(self):
+        return f"{self.user.username} - {self.dish.title}"
