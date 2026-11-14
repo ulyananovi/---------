@@ -28,27 +28,34 @@
         <div class="cards-ingredients-swipe" role="tablist" aria-label="Категории блюд">
             {% for cat in categories %}
             <button class="ingredient-card" type="button" onclick="window.location.href='?category={{ cat.id }}'">
-                <div class="ingredient-image"><img src="{% static 'assets/img/' %}{{ cat.image_name }}" alt="{{ cat.name }}"></div>
+                {% if cat.image %}
+                    <div class="ingredient-image"><img src="{{ cat.image.url }}" alt="{{ cat.name }}"></div>
+                {% endif %}
                 <div class="ingredient-name">{{ cat.name }}</div>
             </button>
             {% endfor %}
         </div>
 
+            {% if filters %}
             <div class="main-swipe" role="group" aria-label="Фильтры по ингредиентам">
-                <p onclick="window.location.href='?tag=популярные'">Популярные</p>
-                <p onclick="window.location.href='?tag=с овощами'">С овощами</p>
-                <p onclick="window.location.href='?tag=с мясом'">С мясом</p>
-                <p onclick="window.location.href='?tag=с грибами'">С грибами</p>
-                <p onclick="window.location.href='?tag=с морепродуктами'">С морепродуктами</p>
-                <p onclick="window.location.href='?tag=с сыром'">С сыром</p>
-                <p onclick="window.location.href='?tag=десерты'">Десерты</p>
+                {% for f in filters %}
+                    <p onclick="window.location.href='?category={{ active_category.id }}&tag={{ f.id }}'" 
+                       {% if current_tag == f.id %}class="active-filter"{% endif %}>
+                        {{ f.name }}
+                    </p>
+                {% endfor %}
             </div>
+            {% endif %}
 
             <div class="recipes-container">
                 <div class="cards-main" id="cardsMain">
                     {% for dish in dishes %}
                     <article class="recipe-card" data-type="{{ dish.category.name|lower }}">
-                        <div class="dish-image"><img src="{{ dish.image.url }}" alt="{{ dish.title }}"></div>
+                        <div class="dish-image">
+                            {% if dish.image %}
+                            <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                            {% endif %}
+                        </div>
                         <h3 class="dish-title">{{ dish.title }}</h3>
                         <div class="cooking-info">
                             <span class="price">{{ dish.price }} ₽</span>
@@ -58,7 +65,7 @@
                     </article>
                     {% endfor %}
                 </div>
-                <p class="empty-message" id="emptyMessage" hidden>Ничего не найдено. Попробуйте изменить фильтры.</p>
+                <p class="empty-message" id="emptyMessage" {% if dishes %}hidden{% endif %}>Ничего не найдено. Попробуйте изменить фильтры.</p>
             </div>
     </main>
 
@@ -105,151 +112,26 @@
 
     <script src="{% static 'scripts/auth.js' %}"></script>
     <script>
-        (function () {
-            'use strict';
+    document.querySelectorAll('.order-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const title = this.getAttribute('data-title');
+            const price = this.getAttribute('data-price');
+            const img = this.getAttribute('data-img');
 
-            const filterButtons = Array.from(document.querySelectorAll('.main-swipe p'));
-            const recipeCards = Array.from(document.querySelectorAll('.recipe-card'));
-            const typeCards = Array.from(document.querySelectorAll('.ingredient-card'));
-            const searchInput = document.getElementById('dishSearch');
-            const cardsContainer = document.getElementById('cardsMain');
-            const emptyMessage = document.getElementById('emptyMessage');
-
-            let activeType = null;
-            let activeFilter = null;
-
-            const parseFilters = (str) =>
-                str ? str.split(',').map((s) => s.trim().toLowerCase()) : [];
-
-            const getCardType = (card) => (card.dataset.type || '').toLowerCase();
-            const getCardTitle = (card) => card.querySelector('.dish-title').textContent.toLowerCase();
-
-            function setFiltersAvailability(type) {
-                const available = new Set();
-                recipeCards.forEach((card) => {
-                    if (getCardType(card) === type) {
-                        parseFilters(card.dataset.filters).forEach((f) => available.add(f));
-                    }
-                });
-                filterButtons.forEach((btn) => {
-                    const f = btn.dataset.filter.toLowerCase();
-                    const isAvailable = available.has(f);
-                    btn.classList.toggle('disabled', !isAvailable);
-                    if (!isAvailable) btn.classList.remove('active-filter');
-                    btn.setAttribute('aria-disabled', String(!isAvailable));
-                });
-            }
-
-            function resetFilters() {
-                filterButtons.forEach((btn) => {
-                    btn.classList.remove('disabled', 'active-filter');
-                    btn.setAttribute('aria-disabled', 'false');
-                });
-            }
-
-            function sortVisible(visible) {
-                const q = searchInput.value.trim().toLowerCase();
-                if (!q) {
-                    recipeCards.forEach((card) => cardsContainer.appendChild(card));
-                    return;
-                }
-                visible.sort((a, b) => {
-                    const ta = getCardTitle(a);
-                    const tb = getCardTitle(b);
-                    const sa = ta.startsWith(q);
-                    const sb = tb.startsWith(q);
-                    if (sa && !sb) return -1;
-                    if (!sa && sb) return 1;
-                    return ta.localeCompare(tb);
-                });
-                visible.forEach((card) => cardsContainer.appendChild(card));
-            }
-
-            function applyFilters() {
-                const q = searchInput.value.trim().toLowerCase();
-                const visible = [];
-
-                recipeCards.forEach((card) => {
-                    let show = true;
-
-                    if (activeType) show = getCardType(card) === activeType;
-                    if (show && activeFilter) {
-                        show = parseFilters(card.dataset.filters).includes(activeFilter);
-                    }
-                    if (show && q) show = getCardTitle(card).includes(q);
-
-                    card.classList.toggle('hidden', !show);
-                    if (show) visible.push(card);
-                });
-
-                emptyMessage.hidden = visible.length > 0;
-                sortVisible(visible);
-            }
-
-            function clearTypeSelection() {
-                typeCards.forEach((t) => {
-                    t.classList.remove('active-type', 'active-type-shrink');
-                    t.setAttribute('aria-selected', 'false');
-                });
-            }
-
-            typeCards.forEach((typeCard) => {
-                typeCard.addEventListener('click', () => {
-                    const type = typeCard.dataset.type;
-
-                    if (activeType === type) {
-                        clearTypeSelection();
-                        activeType = null;
-                        activeFilter = null;
-                        resetFilters();
-                        applyFilters();
-                        return;
-                    }
-
-                    clearTypeSelection();
-                    typeCard.classList.add('active-type-shrink');
-                    typeCard.setAttribute('aria-selected', 'true');
-
-                    activeType = type;
-                    activeFilter = null;
-                    filterButtons.forEach((b) => b.classList.remove('active-filter'));
-                    setFiltersAvailability(activeType);
-                    applyFilters();
-                });
-            });
-
-            filterButtons.forEach((btn) => {
-                const handler = () => {
-                    if (btn.classList.contains('disabled')) return;
-                    const f = btn.dataset.filter.toLowerCase();
-
-                    if (activeFilter === f) {
-                        activeFilter = null;
-                        btn.classList.remove('active-filter');
-                        applyFilters();
-                        return;
-                    }
-
-                    filterButtons.forEach((b) => b.classList.remove('active-filter'));
-                    btn.classList.add('active-filter');
-                    activeFilter = f;
-                    applyFilters();
-                };
-
-                btn.addEventListener('click', handler);
-                btn.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handler();
-                    }
-                });
-            });
-
-            searchInput.addEventListener('input', applyFilters);
-
-            resetFilters();
-            applyFilters();
-        })();
-    </script>
+            let orders = JSON.parse(localStorage.getItem('hroom_orders')) || [];
+            orders.push({ title, price, img });
+            localStorage.setItem('hroom_orders', JSON.stringify(orders));
+            
+            const originalText = this.textContent;
+            this.textContent = 'Добавлено!';
+            this.style.background = '#4C5C13';
+            
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.style.background = '#FE8E66';
+            }, 1500);
+        });
+    });
+</script>
 </body>
 </html>
