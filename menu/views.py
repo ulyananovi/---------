@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from .models import Category, Dish, Filter
+from .models import Category, Dish, Filter, Order
+from django.http import JsonResponse
+import json
 
 def catalog_view(request):
     categories = Category.objects.all()
@@ -27,3 +29,22 @@ def catalog_view(request):
         'current_tag': int(tag_id) if tag_id else None,
     }
     return render(request, 'pages/catalog.html', context)
+
+def make_order(request):
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return JsonResponse({'status': 'error', 'message': 'Необходимо войти в аккаунт'}, status=401)
+        
+        try:
+            data = json.loads(request.body)
+            dish_id = data.get('dish_id')
+            dish = Dish.objects.get(id=dish_id)
+            
+            Order.objects.create(user=request.user, dish=dish)
+            return JsonResponse({'status': 'success', 'message': 'Заказ успешно создан'})
+        except Dish.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Блюдо не найдено'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+            
+    return JsonResponse({'status': 'error', 'message': 'Метод не разрешен'}, status=405)

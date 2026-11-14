@@ -61,7 +61,7 @@
                             <span class="price">{{ dish.price }} ₽</span>
                             <span class="weight">{{ dish.weight }}</span>
                         </div>
-                        <button class="order-btn" data-title="{{ dish.title }}" data-price="{{ dish.price }}" data-img="{{ dish.image_name }}">Заказать</button>
+                        <button class="order-btn" data-id="{{ dish.id }}" data-title="{{ dish.title }}" data-price="{{ dish.price }}" data-img="{{ dish.image.url }}">Заказать</button>
                     </article>
                     {% endfor %}
                 </div>
@@ -114,22 +114,39 @@
     <script>
     document.querySelectorAll('.order-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            const title = this.getAttribute('data-title');
-            const price = this.getAttribute('data-price');
-            const img = this.getAttribute('data-img');
-
-            let orders = JSON.parse(localStorage.getItem('hroom_orders')) || [];
-            orders.push({ title, price, img });
-            localStorage.setItem('hroom_orders', JSON.stringify(orders));
-            
+            const dishId = this.getAttribute('data-id');
             const originalText = this.textContent;
-            this.textContent = 'Добавлено!';
-            this.style.background = '#4C5C13';
             
-            setTimeout(() => {
+            this.textContent = 'Загрузка...';
+
+            fetch('/catalog/order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ dish_id: dishId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    this.textContent = 'Добавлено!';
+                    this.style.background = '#4C5C13';
+                } else {
+                    alert(data.message);
+                    this.textContent = originalText;
+                }
+            })
+            .catch(error => {
+                alert('Ошибка при отправке');
                 this.textContent = originalText;
-                this.style.background = '#FE8E66';
-            }, 1500);
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.background = '#FE8E66';
+                }, 1500);
+            });
         });
     });
 </script>
