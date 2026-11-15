@@ -91,3 +91,20 @@ def logout_view(request):
 def profile_view(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'pages/profile.html', {'orders': orders})
+
+def toggle_favorite(request, order_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        order = Order.objects.filter(id=order_id, user=request.user).first()
+        if order:
+            order.is_favorite = not order.is_favorite
+            order.save()
+            return JsonResponse({'status': 'success', 'is_favorite': order.is_favorite})
+    return JsonResponse({'status': 'error'}, status=400)
+
+def delete_order(request, order_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        order = Order.objects.filter(id=order_id, user=request.user).first()
+        if order:
+            order.delete()
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)

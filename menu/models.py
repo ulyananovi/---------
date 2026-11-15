@@ -33,6 +33,7 @@ class Order(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE, verbose_name="Блюдо")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата заказа")
     status = models.CharField(max_length=50, default='Новый', verbose_name="Статус")
+    is_favorite = models.BooleanField(default=False, verbose_name="В избранном")
 
     def __str__(self):
         return f"{self.user.username} - {self.dish.title}"

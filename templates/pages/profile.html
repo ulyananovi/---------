@@ -50,7 +50,7 @@
                     <p class="stats-label">Бонусов</p>
                 </div>
                 <div class="stats-item">
-                    <p class="stats-value">{{ orders.count }}</p>
+                    <p class="stats-value" id="favCount">0</p>
                     <p class="stats-label">Избранных</p>
                 </div>
             </section>
@@ -60,40 +60,58 @@
                     <h2 class="section-title" id="ordersTitle">Мои заказы</h2>
                     <a href="/catalog/" class="add-btn" title="Перейти в каталог">+ Добавить</a>
                 </div>
-                <div class="cards-list">
+                <div class="cards-list" id="ordersContainer">
                     {% for order in orders %}
-                    <article class="dish-card">
-                        <div class="dish-image">
-                            {% if order.dish.image %}
-                            <img src="{{ order.dish.image.url }}" alt="{{ order.dish.title }}">
-                            {% endif %}
-                        </div>
-                        <h3 class="dish-title">{{ order.dish.title }}</h3>
-                        <div class="dish-info">
-                            <span class="price">{{ order.dish.price }} ₽</span>
-                            <span class="status">{{ order.status }}</span>
-                        </div>
-                    </article>
+                        {% if not order.is_favorite %}
+                        <article class="dish-card" id="order-{{ order.id }}">
+                            <div class="dish-image">
+                                {% if order.dish.image %}
+                                <img src="{{ order.dish.image.url }}" alt="{{ order.dish.title }}">
+                                {% endif %}
+                            </div>
+                            <h3 class="dish-title">{{ order.dish.title }}</h3>
+                            <div class="dish-info">
+                                <span class="price">{{ order.dish.price }} ₽</span>
+                                <span class="status">{{ order.status }}</span>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="fav-btn" data-id="{{ order.id }}" style="flex: 1; padding: 8px; background: #D9E694; color: #4C5C13; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">★ В избранное</button>
+                                <button class="del-btn" data-id="{{ order.id }}" style="flex: 1; padding: 8px; background: #ffcccc; color: #d32f2f; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Удалить</button>
+                            </div>
+                        </article>
+                        {% endif %}
                     {% empty %}
                     <p style="color: #4C5C13; font-size: 14px;">У вас пока нет заказов.</p>
                     {% endfor %}
                 </div>
-
             </section>
 
             <section class="section" aria-labelledby="favoritesTitle">
                 <div class="section-head">
                     <h2 class="section-title" id="favoritesTitle">Избранные блюда</h2>
                 </div>
-                <div class="cards-list">
-                    <article class="dish-card">
-                        <div class="dish-image"><img src="{% static 'assets/img/паста карбонара.jpg' %}" alt="Паста Карбонара"></div>
-                        <h3 class="dish-title">Паста Карбонара</h3>
-                        <div class="dish-info">
-                            <span class="price">450 ₽</span>
-                            <span class="status">В меню</span>
-                        </div>
-                    </article>
+                <div class="cards-list" id="favoritesContainer">
+                    {% for order in orders %}
+                        {% if order.is_favorite %}
+                        <article class="dish-card" id="fav-{{ order.id }}">
+                            <div class="dish-image">
+                                {% if order.dish.image %}
+                                <img src="{{ order.dish.image.url }}" alt="{{ order.dish.title }}">
+                                {% endif %}
+                            </div>
+                            <h3 class="dish-title">{{ order.dish.title }}</h3>
+                            <div class="dish-info">
+                                <span class="price">{{ order.dish.price }} ₽</span>
+                                <span class="status">В меню</span>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <button class="unfav-btn" data-id="{{ order.id }}" style="flex: 1; padding: 8px; background: #FDC8A0; color: #601d04; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">✖ Из избранного</button>
+                            </div>
+                        </article>
+                        {% endif %}
+                    {% empty %}
+                    <p style="color: #4C5C13; font-size: 14px;">У вас пока нет избранных блюд.</p>
+                    {% endfor %}
                 </div>
             </section>
 
@@ -146,9 +164,10 @@
     </footer>
 
     <script src="{% static 'scripts/auth.js' %}"></script>
-        <script>
+    <script>
         (function () {
             'use strict';
+
             document.addEventListener('DOMContentLoaded', () => {
                 const settingsBtn = document.getElementById('settingsBtn');
                 const settingsModal = document.getElementById('settingsModal');
@@ -157,18 +176,68 @@
                 const openModal = () => { settingsModal.style.display = 'flex'; };
                 const closeModal = () => { settingsModal.style.display = 'none'; };
 
-                settingsBtn.addEventListener('click', openModal);
-                cancelBtn.addEventListener('click', closeModal);
-                cancelBtn.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeModal(); }
-                });
+                if(settingsBtn) settingsBtn.addEventListener('click', openModal);
+                if(cancelBtn) {
+                    cancelBtn.addEventListener('click', closeModal);
+                    cancelBtn.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeModal(); }
+                    });
+                }
 
-                settingsModal.addEventListener('click', (e) => {
-                    if (e.target === settingsModal) closeModal();
-                });
+                if(settingsModal) {
+                    settingsModal.addEventListener('click', (e) => {
+                        if (e.target === settingsModal) closeModal();
+                    });
+                }
 
                 document.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape') closeModal();
+                });
+
+                const favCountEl = document.getElementById('favCount');
+                if (favCountEl) {
+                    favCountEl.textContent = document.querySelectorAll('#favoritesContainer .dish-card').length;
+                }
+
+                async function sendRequest(url) {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                            }
+                        });
+                        return await response.json();
+                    } catch (e) {
+                        console.error(e);
+                        return null;
+                    }
+                }
+
+                document.querySelectorAll('.fav-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = this.getAttribute('data-id');
+                        await sendRequest(`/catalog/favorite/${id}/`);
+                        location.reload();
+                    });
+                });
+
+                document.querySelectorAll('.del-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        if (confirm('Удалить заказ?')) {
+                            const id = this.getAttribute('data-id');
+                            await sendRequest(`/catalog/delete/${id}/`);
+                            location.reload();
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.unfav-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const id = this.getAttribute('data-id');
+                        await sendRequest(`/catalog/favorite/${id}/`);
+                        location.reload();
+                    });
                 });
             });
         })();
