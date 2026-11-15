@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,31 +18,57 @@
 
             <form class="auth-form" method="post">
                 {% csrf_token %}
+                
                 <div class="input-group">
-                    <label class="text">ФИО</label>
+                    <label class="text">{{ form.full_name.label }}</label>
                     {{ form.full_name }}
-                    {{ form.full_name.errors }}
+                    {% if form.full_name.errors %}
+                    <span class="error-msg">{{ form.full_name.errors.0 }}</span>
+                    {% endif %}
                 </div>
+
                 <div class="input-group">
-                    <label class="text">Почта</label>
+                    <label class="text">{{ form.email.label }}</label>
                     {{ form.email }}
-                    {{ form.email.errors }}
+                    {% if form.email.errors %}
+                    <span class="error-msg">{{ form.email.errors.0 }}</span>
+                    {% endif %}
                 </div>
+
                 <div class="input-group">
-                    <label class="text">Логин</label>
+                    <label class="text">{{ form.username.label }}</label>
                     {{ form.username }}
-                    {{ form.username.errors }}
+                    {% if form.username.errors %}
+                    <span class="error-msg">{{ form.username.errors.0 }}</span>
+                    {% endif %}
                 </div>
+
                 <div class="input-group">
-                    <label class="text">Пароль</label>
-                    {{ form.password1 }}
-                    {{ form.password1.errors }}
+                    <label class="text">{{ form.password1.label }}</label>
+                    <div class="password-wrap">
+                        {{ form.password1 }}
+                        <button type="button" class="toggle-password" id="toggleRegPass1" aria-label="Показать пароль">
+                            <img src="{% static 'assets/img/открыт глаз.svg' %}" alt="" class="eye-icon" id="eyeRegIcon1">
+                        </button>
+                    </div>
+                    {% if form.password1.errors %}
+                    <span class="error-msg">{{ form.password1.errors.0 }}</span>
+                    {% endif %}
                 </div>
+
                 <div class="input-group">
-                    <label class="text">Повтор пароля</label>
-                    {{ form.password2 }}
-                    {{ form.password2.errors }}
+                    <label class="text">{{ form.password2.label }}</label>
+                    <div class="password-wrap">
+                        {{ form.password2 }}
+                        <button type="button" class="toggle-password" id="toggleRegPass2" aria-label="Показать пароль">
+                            <img src="{% static 'assets/img/открыт глаз.svg' %}" alt="" class="eye-icon" id="eyeRegIcon2">
+                        </button>
+                    </div>
+                    {% if form.password2.errors %}
+                    <span class="error-msg">{{ form.password2.errors.0 }}</span>
+                    {% endif %}
                 </div>
+
                 <button type="submit" class="button">ЗАРЕГИСТРИРОВАТЬСЯ</button>
                 <a href="/login/" class="link-secondary">Есть аккаунт?</a>
                 <a href="/" class="link-secondary">← На главную</a>
@@ -50,122 +76,23 @@
         </div>
     </main>
 
-    <script src="{% static 'scripts/auth.js' %}"></script>
     <script>
-        (function () {
-            'use strict';
-
-            const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-            const LOGIN_RE = /^[a-zA-Z0-9_]+$/;
-
-            const form = document.getElementById('registerForm');
-            const fields = {
-                regName: document.getElementById('regName'),
-                regEmail: document.getElementById('regEmail'),
-                regLogin: document.getElementById('regLogin'),
-                regPassword: document.getElementById('regPassword'),
-                regPasswordConfirm: document.getElementById('regPasswordConfirm')
-            };
-
-            function setError(input, message) {
-                const span = document.querySelector(`.error-msg[data-error-for="${input.id}"]`);
-                if (span) span.textContent = message || '';
-                input.classList.toggle('input-error', Boolean(message));
-            }
-
-            function validateField(input) {
-                const value = input.value.trim();
-
-                switch (input.id) {
-                    case 'regName':
-                        if (!value) { setError(input, 'Введите ФИО'); return false; }
-                        if (value.split(/\s+/).length < 2) { setError(input, 'Укажите имя и фамилию'); return false; }
-                        break;
-
-                    case 'regEmail':
-                        if (!value) { setError(input, 'Введите почту'); return false; }
-                        if (!EMAIL_RE.test(value)) { setError(input, 'Некорректный формат почты'); return false; }
-                        break;
-
-                    case 'regLogin':
-                        if (!value) { setError(input, 'Введите логин'); return false; }
-                        if (value.length < 3) { setError(input, 'Логин не короче 3 символов'); return false; }
-                        if (!LOGIN_RE.test(value)) { setError(input, 'Только латиница, цифры и _'); return false; }
-                        break;
-
-                    case 'regPassword':
-                        if (!value) { setError(input, 'Введите пароль'); return false; }
-                        if (value.length < 8) { setError(input, 'Пароль не короче 8 символов'); return false; }
-                        setError(input, '');
-                        if (fields.regPasswordConfirm.value) validateField(fields.regPasswordConfirm);
-                        return true;
-
-                    case 'regPasswordConfirm':
-                        if (!value) { setError(input, 'Повторите пароль'); return false; }
-                        if (value !== fields.regPassword.value) { setError(input, 'Пароли не совпадают'); return false; }
-                        break;
-
-                    default:
-                        return true;
-                }
-
-                setError(input, '');
-                return true;
-            }
-
-            Object.values(fields).forEach((input) => {
-                input.addEventListener('blur', () => validateField(input));
-                input.addEventListener('input', () => {
-                    if (input.classList.contains('input-error')) validateField(input);
-                });
-            });
-
-            document.querySelectorAll('.toggle-password').forEach((btn) => {
+        function setupPasswordToggle(btnId, inputId, iconId) {
+            const btn = document.getElementById(btnId);
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            
+            if (btn && input && icon) {
                 btn.addEventListener('click', () => {
-                    const input = document.getElementById(btn.dataset.target);
-                    if (!input) return;
-                    const icon = btn.querySelector('.eye-icon');
                     const isPassword = input.type === 'password';
                     input.type = isPassword ? 'text' : 'password';
-
-                    if (icon) {
-                        const openSrc = icon.dataset.open;
-                        const closedSrc = icon.dataset.closed;
-                        icon.src = isPassword ? closedSrc : openSrc;
-                    }
-                    btn.setAttribute('aria-label', isPassword ? 'Скрыть пароль' : 'Показать пароль');
+                    icon.src = isPassword ? "{% static 'assets/img/закрыт глаз.svg' %}" : "{% static 'assets/img/открыт глаз.svg' %}";
                 });
-            });
+            }
+        }
 
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-
-                let isValid = true;
-                let firstInvalid = null;
-
-                Object.values(fields).forEach((input) => {
-                    if (!validateField(input)) {
-                        isValid = false;
-                        if (!firstInvalid) firstInvalid = input;
-                    }
-                });
-
-                if (!isValid) {
-                    if (firstInvalid) firstInvalid.focus();
-                    return;
-                }
-
-                const fullName = fields.regName.value.trim();
-                const login = fields.regLogin.value.trim();
-
-                localStorage.setItem('hroom_auth', 'true');
-                localStorage.setItem('hroom_user', fullName);
-                localStorage.setItem('hroom_login', login);
-
-                alert('Регистрация прошла успешно!');
-                window.location.href = '/profile/';
-            });
-        })();
+        setupPasswordToggle('toggleRegPass1', 'id_password1', 'eyeRegIcon1');
+        setupPasswordToggle('toggleRegPass2', 'id_password2', 'eyeRegIcon2');
     </script>
 </body>
 </html>

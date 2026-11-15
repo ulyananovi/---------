@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', menu_views.register_view, name='register'),
     path('login/', menu_views.login_view, name='login'),
     path('logout/', menu_views.logout_view, name='logout'), 
-    path('profile/', TemplateView.as_view(template_name='pages/profile.html'), name='profile'),
+    path('profile/', menu_views.profile_view, name='profile'),
 ]
 
 if settings.DEBUG:

@@ -1,8 +1,10 @@
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.shortcuts import render, redirect
 from .models import Category, Dish, Filter, Order
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 import json
 
 def catalog_view(request):
@@ -55,11 +57,14 @@ def register_view(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.first_name = form.cleaned_data.get('full_name')
-            user.save()
-            login(request, user)
-            return redirect('catalog')
+            if User.objects.filter(username=form.cleaned_data.get('username')).exists():
+                form.add_error('username', 'Пользователь с таким логином уже существует.')
+            else:
+                user = form.save()
+                user.first_name = form.cleaned_data.get('full_name')
+                user.save()
+                login(request, user)
+                return redirect('catalog')
     else:
         form = CustomUserCreationForm()
     return render(request, 'pages/register.html', {'form': form})
@@ -81,3 +86,8 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
+
+@login_required(login_url='/login/')
+def profile_view(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'pages/profile.html', {'orders': orders})
