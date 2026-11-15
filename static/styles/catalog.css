@@ -497,3 +497,22 @@ main {
         grid-column: auto;
     }
 }
+
+.order-btn {
+    width: 100%;
+    margin-top: 15px;
+    background: #FE8E66;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: Raleway, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.order-btn:hover {
+    background: #e5734a;
+    transform: translateY(-2px);
+}
