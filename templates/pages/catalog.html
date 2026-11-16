@@ -58,8 +58,12 @@
                     {% for dish in dishes %}
                     <article class="recipe-card" data-type="{{ dish.category.name|lower }}">
                         <div class="dish-image">
-                            {% if dish.image %}
-                            <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                            {% if dish.image and dish.image.name %}
+                                <img src="{{ dish.image.url }}" alt="{{ dish.title }}">
+                            {% else %}
+                                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background-color: #f0f0f0; color: #ccc; font-size: 40px;">
+                                    🍽️
+                                </div>
                             {% endif %}
                         </div>
                         <h3 class="dish-title">{{ dish.title }}</h3>
@@ -67,7 +71,7 @@
                             <span class="price">{{ dish.price }} ₽</span>
                             <span class="weight">{{ dish.weight }}</span>
                         </div>
-                        <button class="order-btn" data-id="{{ dish.id }}" data-title="{{ dish.title }}" data-price="{{ dish.price }}" data-img="{{ dish.image.url }}">Заказать</button>
+                        <button class="order-btn" data-id="{{ dish.id }}" data-title="{{ dish.title }}" data-price="{{ dish.price }}" data-img="{% if dish.image and dish.image.name %}{{ dish.image.url }}{% endif %}">Заказать</button>
                     </article>
                     {% endfor %}
                 </div>
